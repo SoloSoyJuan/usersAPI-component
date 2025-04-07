@@ -20,14 +20,18 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean install -Dmaven.test.skip=true'
-- task: UseJavaVersion@1
-  inputs:
-    versionSpec: '1.8'
-    architecture: 'x64'
 
 - script: |
+    echo "Java version antes de forzar ruta:"
     java -version
 
-    echo "Ejecutando la aplicación con Java 8..."
+    # Forzar Java 8 usando path fijo en el agente
+    export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64
+    export PATH=$JAVA_HOME/bin:$PATH
+
+    echo "Java version después de forzar ruta:"
+    java -version
+
+    echo "Ejecutando la aplicación con Java 8 forzado..."
     JWT_SECRET=PRFT SERVER_PORT=8083 java -jar target/users-api-0.0.1-SNAPSHOT.jar
-  displayName: 'Run Application with Java 8'
+  displayName: 'Run Application with Java 8 forzado'
