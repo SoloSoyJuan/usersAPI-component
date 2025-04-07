@@ -20,16 +20,12 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean install -Dmaven.test.skip=true'
+- task: UseJavaVersion@1
+  inputs:
+    versionSpec: '1.8'
+    architecture: 'x64'
 
 - script: |
-    echo "Java version antes de exportar PATH:"
-    java -version
-
-    # Forzar Java 8 para la ejecución
-    export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
-    export PATH=$JAVA_HOME/bin:$PATH
-
-    echo "Java version después de exportar PATH:"
     java -version
 
     echo "Ejecutando la aplicación con Java 8..."
